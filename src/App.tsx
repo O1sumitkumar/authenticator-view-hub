@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import DashboardLayout from "./components/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
 import Users from "./pages/Users";
+import Codes from "./pages/Codes";
 import UserDetail from "./pages/UserDetail";
 import Security from "./pages/Security";
 import Activity from "./pages/Activity";
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="users" element={<Users />} />
+            <Route path="codes" element={<Codes />} />
             <Route path="users/:id" element={<UserDetail />} />
             <Route path="security" element={<Security />} />
             <Route path="activity" element={<Activity />} />

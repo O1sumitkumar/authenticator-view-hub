@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { 
   Home, 
-  Users, 
+  Users,
+  Key, 
   Settings, 
   Shield, 
   Activity,
@@ -17,6 +18,7 @@ import { Input } from '@/components/ui/input';
 const navigation = [
   { name: 'Dashboard', href: '/', icon: Home },
   { name: 'Users', href: '/users', icon: Users },
+  { name: 'Codes', href: '/codes', icon: Key },
   { name: 'Security', href: '/security', icon: Shield },
   { name: 'Activity', href: '/activity', icon: Activity },
   { name: 'Settings', href: '/settings', icon: Settings },
