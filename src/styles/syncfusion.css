@@ -1,0 +1,110 @@
+/* Syncfusion theme customization for dark dashboard */
+@import url('https://cdn.syncfusion.com/ej2/material3-dark.css');
+
+/* Grid customization */
+.e-grid {
+  background: transparent !important;
+  border: none !important;
+}
+
+.e-grid .e-headercell {
+  background: hsl(var(--muted)) !important;
+  color: hsl(var(--foreground)) !important;
+  border-color: hsl(var(--border)) !important;
+  font-weight: 600 !important;
+}
+
+.e-grid .e-row {
+  background: transparent !important;
+  color: hsl(var(--foreground)) !important;
+  border-color: hsl(var(--border)) !important;
+}
+
+.e-grid .e-row:hover {
+  background: hsl(var(--muted) / 0.5) !important;
+}
+
+.e-grid .e-altrow {
+  background: hsl(var(--muted) / 0.2) !important;
+}
+
+.e-grid .e-content {
+  background: transparent !important;
+}
+
+.e-grid .e-gridpager {
+  background: hsl(var(--card)) !important;
+  color: hsl(var(--foreground)) !important;
+  border-color: hsl(var(--border)) !important;
+}
+
+/* Chart customization */
+.e-chart {
+  background: transparent !important;
+}
+
+.e-chart .e-chart-title {
+  color: hsl(var(--foreground)) !important;
+}
+
+.e-chart .e-axis-label {
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+.e-chart .e-legend-text {
+  color: hsl(var(--foreground)) !important;
+}
+
+/* Button customization */
+.e-btn {
+  background: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
+  border-color: hsl(var(--primary)) !important;
+}
+
+.e-btn:hover {
+  background: hsl(var(--primary) / 0.9) !important;
+}
+
+/* Input customization */
+.e-input-group,
+.e-input-group input {
+  background: hsl(var(--background)) !important;
+  color: hsl(var(--foreground)) !important;
+  border-color: hsl(var(--border)) !important;
+}
+
+.e-input-group:focus-within {
+  border-color: hsl(var(--primary)) !important;
+}
+
+/* Dropdown customization */
+.e-dropdownbase .e-list-item {
+  background: hsl(var(--background)) !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+.e-dropdownbase .e-list-item:hover {
+  background: hsl(var(--muted)) !important;
+}
+
+/* Tooltip customization */
+.e-tooltip {
+  background: hsl(var(--popover)) !important;
+  color: hsl(var(--popover-foreground)) !important;
+  border-color: hsl(var(--border)) !important;
+}
+
+/* Custom utility classes */
+.user-grid .e-grid {
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.user-grid .e-gridheader {
+  border-radius: 0.75rem 0.75rem 0 0;
+}
+
+.user-grid .e-gridcontent {
+  border-radius: 0 0 0.75rem 0.75rem;
+}
