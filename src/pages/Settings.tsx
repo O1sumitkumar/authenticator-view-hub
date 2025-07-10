@@ -15,9 +15,13 @@ import {
   Key,
   Clock,
   AlertTriangle,
-  Save
+  Save,
+  Moon,
+  Sun,
+  Monitor
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useTheme } from 'next-themes';
 
 interface AppSettings {
   companyName: string;
@@ -35,6 +39,7 @@ interface AppSettings {
 
 export default function Settings() {
   const { toast } = useToast();
+  const { theme, setTheme } = useTheme();
   const [settings, setSettings] = useState<AppSettings>({
     companyName: 'Acme Corporation',
     adminEmail: 'admin@company.com',
@@ -171,6 +176,39 @@ export default function Settings() {
                     />
                     <p className="text-sm text-muted-foreground">
                       This name appears in authenticator apps
+                    </p>
+                  </div>
+
+                  <div className="space-y-4">
+                    <Label>Appearance Theme</Label>
+                    <div className="grid grid-cols-3 gap-4">
+                      <Button
+                        variant={theme === 'light' ? 'default' : 'outline'}
+                        onClick={() => setTheme('light')}
+                        className="justify-start"
+                      >
+                        <Sun className="w-4 h-4 mr-2" />
+                        Light
+                      </Button>
+                      <Button
+                        variant={theme === 'dark' ? 'default' : 'outline'}
+                        onClick={() => setTheme('dark')}
+                        className="justify-start"
+                      >
+                        <Moon className="w-4 h-4 mr-2" />
+                        Dark
+                      </Button>
+                      <Button
+                        variant={theme === 'system' ? 'default' : 'outline'}
+                        onClick={() => setTheme('system')}
+                        className="justify-start"
+                      >
+                        <Monitor className="w-4 h-4 mr-2" />
+                        System
+                      </Button>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      Choose your preferred color scheme for the dashboard
                     </p>
                   </div>
                 </CardContent>
