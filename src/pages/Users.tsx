@@ -1,22 +1,30 @@
-import { useState, useEffect } from 'react';
-import { ColumnDirective, ColumnsDirective, GridComponent, Toolbar, Edit, Page, Inject } from '@syncfusion/ej2-react-grids';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { 
-  Plus, 
-  Search, 
-  Filter, 
-  Download, 
-  Shield, 
-  ShieldCheck, 
+import { useState, useEffect } from "react";
+import {
+  ColumnDirective,
+  ColumnsDirective,
+  GridComponent,
+  Toolbar,
+  Edit,
+  Page,
+  Inject,
+} from "@syncfusion/ej2-react-grids";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import {
+  Plus,
+  Search,
+  Filter,
+  Download,
+  Shield,
+  ShieldCheck,
   ShieldOff,
   MoreHorizontal,
   Edit2,
   Trash2,
-  Key
-} from 'lucide-react';
+  Key,
+} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,100 +32,107 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import type { User } from '@/types/auth';
+} from "@/components/ui/dropdown-menu";
+import type { User } from "@/types/auth";
 
 const mockUsers: User[] = [
   {
-    id: '1',
-    name: 'John Doe',
-    email: 'john.doe@company.com',
-    department: 'Engineering',
-    role: 'admin',
+    id: "1",
+    name: "John Doe",
+    email: "john.doe@company.com",
+    department: "Engineering",
+    role: "admin",
     twoFactorEnabled: true,
-    lastLogin: new Date('2024-01-15T10:30:00'),
-    status: 'active',
-    createdAt: new Date('2023-06-15'),
-    updatedAt: new Date('2024-01-15'),
+    lastLogin: new Date("2024-01-15T10:30:00"),
+    status: "active",
+    createdAt: new Date("2023-06-15"),
+    updatedAt: new Date("2024-01-15"),
   },
   {
-    id: '2',
-    name: 'Jane Smith',
-    email: 'jane.smith@company.com',
-    department: 'Marketing',
-    role: 'user',
+    id: "2",
+    name: "Jane Smith",
+    email: "jane.smith@company.com",
+    department: "Marketing",
+    role: "user",
     twoFactorEnabled: true,
-    lastLogin: new Date('2024-01-15T09:15:00'),
-    status: 'active',
-    createdAt: new Date('2023-08-22'),
-    updatedAt: new Date('2024-01-15'),
+    lastLogin: new Date("2024-01-15T09:15:00"),
+    status: "active",
+    createdAt: new Date("2023-08-22"),
+    updatedAt: new Date("2024-01-15"),
   },
   {
-    id: '3',
-    name: 'Mike Wilson',
-    email: 'mike.wilson@company.com',
-    department: 'Sales',
-    role: 'manager',
+    id: "3",
+    name: "Mike Wilson",
+    email: "mike.wilson@company.com",
+    department: "Sales",
+    role: "manager",
     twoFactorEnabled: false,
-    lastLogin: new Date('2024-01-14T16:45:00'),
-    status: 'active',
-    createdAt: new Date('2023-04-10'),
-    updatedAt: new Date('2024-01-14'),
+    lastLogin: new Date("2024-01-14T16:45:00"),
+    status: "active",
+    createdAt: new Date("2023-04-10"),
+    updatedAt: new Date("2024-01-14"),
   },
   {
-    id: '4',
-    name: 'Sarah Johnson',
-    email: 'sarah.johnson@company.com',
-    department: 'HR',
-    role: 'user',
+    id: "4",
+    name: "Sarah Johnson",
+    email: "sarah.johnson@company.com",
+    department: "HR",
+    role: "user",
     twoFactorEnabled: true,
-    lastLogin: new Date('2024-01-12T14:20:00'),
-    status: 'inactive',
-    createdAt: new Date('2023-09-05'),
-    updatedAt: new Date('2024-01-12'),
+    lastLogin: new Date("2024-01-12T14:20:00"),
+    status: "inactive",
+    createdAt: new Date("2023-09-05"),
+    updatedAt: new Date("2024-01-12"),
   },
   {
-    id: '5',
-    name: 'David Brown',
-    email: 'david.brown@company.com',
-    department: 'Finance',
-    role: 'user',
+    id: "5",
+    name: "David Brown",
+    email: "david.brown@company.com",
+    department: "Finance",
+    role: "user",
     twoFactorEnabled: false,
-    lastLogin: new Date('2024-01-10T11:30:00'),
-    status: 'suspended',
-    createdAt: new Date('2023-11-12'),
-    updatedAt: new Date('2024-01-10'),
+    lastLogin: new Date("2024-01-10T11:30:00"),
+    status: "suspended",
+    createdAt: new Date("2023-11-12"),
+    updatedAt: new Date("2024-01-10"),
   },
 ];
 
 export default function Users() {
   const [users, setUsers] = useState<User[]>(mockUsers);
   const [filteredUsers, setFilteredUsers] = useState<User[]>(mockUsers);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedFilter, setSelectedFilter] = useState('all');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedFilter, setSelectedFilter] = useState("all");
 
   useEffect(() => {
     let filtered = users;
 
     // Apply search filter
     if (searchTerm) {
-      filtered = filtered.filter(user =>
-        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.department.toLowerCase().includes(searchTerm.toLowerCase())
+      filtered = filtered.filter(
+        (user) =>
+          user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          user.department.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
     // Apply status filter
-    if (selectedFilter !== 'all') {
-      filtered = filtered.filter(user => {
+    if (selectedFilter !== "all") {
+      filtered = filtered.filter((user) => {
         switch (selectedFilter) {
-          case 'active': return user.status === 'active';
-          case 'inactive': return user.status === 'inactive';
-          case 'suspended': return user.status === 'suspended';
-          case '2fa-enabled': return user.twoFactorEnabled;
-          case '2fa-disabled': return !user.twoFactorEnabled;
-          default: return true;
+          case "active":
+            return user.status === "active";
+          case "inactive":
+            return user.status === "inactive";
+          case "suspended":
+            return user.status === "suspended";
+          case "2fa-enabled":
+            return user.twoFactorEnabled;
+          case "2fa-disabled":
+            return !user.twoFactorEnabled;
+          default:
+            return true;
         }
       });
     }
@@ -127,11 +142,13 @@ export default function Users() {
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'active':
-        return <Badge className="bg-green-600 hover:bg-green-700">Active</Badge>;
-      case 'inactive':
+      case "active":
+        return (
+          <Badge className="bg-green-600 hover:bg-green-700">Active</Badge>
+        );
+      case "inactive":
         return <Badge variant="secondary">Inactive</Badge>;
-      case 'suspended':
+      case "suspended":
         return <Badge variant="destructive">Suspended</Badge>;
       default:
         return <Badge variant="outline">{status}</Badge>;
@@ -140,11 +157,13 @@ export default function Users() {
 
   const getRoleBadge = (role: string) => {
     switch (role) {
-      case 'admin':
-        return <Badge className="bg-purple-600 hover:bg-purple-700">Admin</Badge>;
-      case 'manager':
+      case "admin":
+        return (
+          <Badge className="bg-purple-600 hover:bg-purple-700">Admin</Badge>
+        );
+      case "manager":
         return <Badge className="bg-blue-600 hover:bg-blue-700">Manager</Badge>;
-      case 'user':
+      case "user":
         return <Badge variant="outline">User</Badge>;
       default:
         return <Badge variant="outline">{role}</Badge>;
@@ -198,11 +217,13 @@ export default function Users() {
 
   const statusTemplate = (props: User) => getStatusBadge(props.status);
   const roleTemplate = (props: User) => getRoleBadge(props.role);
-  const twoFactorTemplate = (props: User) => get2FAStatus(props.twoFactorEnabled);
+  const twoFactorTemplate = (props: User) =>
+    get2FAStatus(props.twoFactorEnabled);
   const actionsTemplate = (props: User) => userActionsTemplate(props);
   const dateTemplate = (props: User) => (
     <span className="text-sm text-muted-foreground">
-      {props.lastLogin.toLocaleDateString()} {props.lastLogin.toLocaleTimeString()}
+      {props.lastLogin.toLocaleDateString()}{" "}
+      {props.lastLogin.toLocaleTimeString()}
     </span>
   );
 
@@ -212,7 +233,9 @@ export default function Users() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-foreground">Users</h1>
-          <p className="text-muted-foreground mt-2">Manage user accounts and authentication settings</p>
+          <p className="text-muted-foreground mt-2">
+            Manage user accounts and authentication settings
+          </p>
         </div>
         <Button className="bg-primary hover:bg-primary/90">
           <Plus className="w-4 h-4 mr-2" />
@@ -230,13 +253,13 @@ export default function Users() {
                 placeholder="Search users by name, email, or department..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-background/50"
+                className="pl-10"
               />
             </div>
-            
+
             <div className="flex gap-2">
-              <select 
-                value={selectedFilter} 
+              <select
+                value={selectedFilter}
                 onChange={(e) => setSelectedFilter(e.target.value)}
                 className="px-3 py-2 bg-background border border-border rounded-md text-sm focus:ring-2 focus:ring-primary focus:border-primary"
               >
@@ -247,11 +270,8 @@ export default function Users() {
                 <option value="2fa-enabled">2FA Enabled</option>
                 <option value="2fa-disabled">2FA Disabled</option>
               </select>
-              
-              <Button variant="outline" size="sm">
-                <Download className="w-4 h-4 mr-2" />
-                Export
-              </Button>
+
+
             </div>
           </div>
         </CardContent>
@@ -264,45 +284,51 @@ export default function Users() {
             User Directory ({filteredUsers.length} users)
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-0">
           <GridComponent
             dataSource={filteredUsers}
             allowPaging={true}
             allowSorting={true}
-            pageSettings={{ pageSize: 10 }}
-            className="user-grid"
+            allowFiltering={true}
+            pageSettings={{ pageSize: 10, pageSizes: [5, 10, 20, 50] }}
+            height="auto"
+            className="users-grid"
           >
             <ColumnsDirective>
               <ColumnDirective field="name" headerText="Name" width="180" />
               <ColumnDirective field="email" headerText="Email" width="220" />
-              <ColumnDirective field="department" headerText="Department" width="140" />
-              <ColumnDirective 
-                field="role" 
-                headerText="Role" 
-                width="120" 
+              <ColumnDirective
+                field="department"
+                headerText="Department"
+                width="140"
+              />
+              <ColumnDirective
+                field="role"
+                headerText="Role"
+                width="120"
                 template={roleTemplate}
               />
-              <ColumnDirective 
-                field="status" 
-                headerText="Status" 
-                width="120" 
+              <ColumnDirective
+                field="status"
+                headerText="Status"
+                width="120"
                 template={statusTemplate}
               />
-              <ColumnDirective 
-                field="twoFactorEnabled" 
-                headerText="2FA Status" 
-                width="140" 
+              <ColumnDirective
+                field="twoFactorEnabled"
+                headerText="2FA Status"
+                width="140"
                 template={twoFactorTemplate}
               />
-              <ColumnDirective 
-                field="lastLogin" 
-                headerText="Last Login" 
-                width="180" 
+              <ColumnDirective
+                field="lastLogin"
+                headerText="Last Login"
+                width="180"
                 template={dateTemplate}
               />
-              <ColumnDirective 
-                headerText="Actions" 
-                width="100" 
+              <ColumnDirective
+                headerText="Actions"
+                width="100"
                 template={actionsTemplate}
                 allowSorting={false}
               />

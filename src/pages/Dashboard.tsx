@@ -4,8 +4,9 @@ import { ChartComponent, SeriesCollectionDirective, SeriesDirective, Category, L
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Users, Shield, Activity, AlertTriangle, TrendingUp, Clock } from 'lucide-react';
-import type { DashboardStats, SecurityAlert } from '@/types/auth';
+import { Users, Shield, Activity, AlertTriangle, TrendingUp, Clock, Globe, Key, Building } from 'lucide-react';
+import type { DashboardStats, SecurityAlert, AdminDashboardStats } from '@/types/auth';
+import EnvDebug from '@/components/EnvDebug';
 
 const statsData: DashboardStats = {
   totalUsers: 1247,
@@ -15,6 +16,18 @@ const statsData: DashboardStats = {
   todayLogins: 324,
   totalLogins: 45672,
   securityAlerts: 3
+};
+
+const adminStatsData: AdminDashboardStats = {
+  totalUsers: 1247,
+  totalAccounts: 156,
+  totalApplications: 8,
+  totalRights: 342,
+  temporaryAccounts: 45,
+  personalAccounts: 89,
+  businessAccounts: 22,
+  activeApplications: 7,
+  pendingInvitations: 12,
 };
 
 const recentAlerts: SecurityAlert[] = [
@@ -64,6 +77,7 @@ const loginData = [
 
 export default function Dashboard() {
   const [stats, setStats] = useState<DashboardStats>(statsData);
+  const [adminStats, setAdminStats] = useState<AdminDashboardStats>(adminStatsData);
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
@@ -159,6 +173,66 @@ export default function Dashboard() {
         </Card>
       </div>
 
+      {/* Admin System Stats */}
+      <div className="space-y-4">
+        <div>
+          <h2 className="text-xl font-semibold text-foreground mb-4">Admin System Overview</h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <Card className="bg-gradient-card border-border">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-foreground">Total Applications</CardTitle>
+              <Globe className="h-4 w-4 text-primary" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-foreground">{adminStats.totalApplications}</div>
+              <p className="text-xs text-muted-foreground">
+                Registered APP-X applications
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-card border-border">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-foreground">Total Rights</CardTitle>
+              <Key className="h-4 w-4 text-accent" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-foreground">{adminStats.totalRights}</div>
+              <p className="text-xs text-muted-foreground">
+                Active permission entries
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-card border-border">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-foreground">Business Accounts</CardTitle>
+              <Building className="h-4 w-4 text-primary-glow" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-foreground">{adminStats.businessAccounts}</div>
+              <p className="text-xs text-muted-foreground">
+                Corporate accounts
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-card border-border">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-foreground">Pending Invitations</CardTitle>
+              <Users className="h-4 w-4 text-accent" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-foreground">{adminStats.pendingInvitations}</div>
+              <p className="text-xs text-muted-foreground">
+                Account sharing requests
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card className="bg-gradient-card border-border">
@@ -247,6 +321,7 @@ export default function Dashboard() {
           {recentAlerts.map((alert) => alertTemplate(alert))}
         </CardContent>
       </Card>
+      {import.meta.env.DEV && <EnvDebug />}
     </div>
   );
 }

@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Licensing Architecture Flow Diagram</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .title {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            font-weight: 300;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .architecture-diagram {
+            width: 100%;
+            height: 800px;
+            position: relative;
+            background: #f8fafc;
+            border-radius: 15px;
+            border: 2px solid #e2e8f0;
+            overflow: hidden;
+        }
+
+        .component {
+            position: absolute;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .component:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .user {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+            width: 100px;
+            height: 39px;
+            top: 53px;
+            left: 13px;
+        }
+
+        .keycloak {
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+            color: white;
+            width: 120px;
+            height: 55px;
+            top: 71px;
+            left: 239px;
+        }
+
+        .entra-id {
+            background: linear-gradient(135deg, #0072c6, #0052a3);
+            color: white;
+            width: 100px;
+            height: 60px;
+            top: 10px;
+            left: 500px;
+        }
+
+        .app-admin {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            width: 200px;
+            height: 70px;
+            top: 210px;
+            left: 606px;
+        }
+
+        .license-manager {
+            background: linear-gradient(135deg, #ffa726, #ff7043);
+            color: white;
+            width: 150px;
+            height: 50px;
+            top: 337px;
+            left: 850px;
+        }
+
+        .database {
+            background: linear-gradient(135deg, #26a69a, #00695c);
+            color: white;
+            width: 120px;
+            height: 40px;
+            top: 450px;
+            left: 611px;
+        }
+
+        .usage-tracker {
+            background: linear-gradient(135deg, #ab47bc, #8e24aa);
+            color: white;
+            width: 120px;
+            height: 80px;
+            top: 450px;
+            left: 850px;
+        }
+
+        .app-x {
+            background: linear-gradient(135deg, #42a5f5, #1976d2);
+            color: white;
+            width: 150px;
+            height: 50px;
+            top: 214px;
+            left: 15px;
+
+        }
+
+        .token-cache {
+            background: linear-gradient(135deg, #66bb6a, #43a047);
+            color: white;
+            width: 120px;
+            height: 60px;
+            top: 443px;
+            left: 43px;
+        }
+
+        .feature-gate {
+            background: linear-gradient(135deg, #ffc107, #ff8f00);
+            color: white;
+            width: 120px;
+            height: 60px;
+            top: 381px;
+            left: 279px;
+
+        }
+
+        .admin-portal {
+            background: linear-gradient(135deg, #8d6e63, #5d4037);
+            color: white;
+            width: 120px;
+            height: 50px;
+            top: 607px;
+            left: 628px;
+        }
+
+        .flow-arrow {
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .arrow-line {
+            stroke: #667eea;
+            stroke-width: 3;
+            marker-end: url(#arrowhead);
+            opacity: 0.9;
+        }
+
+        .flow-label {
+            font-size: 12px;
+            fill: #2c3e50;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+        }
+
+        .flow-label-bg {
+            fill: rgba(255, 255, 255, 0.9);
+            stroke: #667eea;
+            stroke-width: 1;
+            rx: 4;
+        }
+
+        .step-number {
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .legend {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .legend h4 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+            font-size: 11px;
+        }
+
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 3px;
+            margin-right: 8px;
+        }
+
+        .flow-steps {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 250px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .flow-steps h4 {
+            margin: 0 0 15px 0;
+            color: #2c3e50;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 5px;
+        }
+
+        .step {
+            margin: 10px 0;
+            padding: 8px;
+            background: #f1f5f9;
+            border-radius: 6px;
+            font-size: 10px;
+            border-left: 3px solid #667eea;
+        }
+
+        .step-num {
+            color: #667eea;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .tooltip {
+            position: absolute;
+            background: #2c3e50;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 10px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+            max-width: 200px;
+        }
+
+        .component:hover+.tooltip,
+        .component:hover .tooltip {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="title">Licensing Architecture Flow Diagram</h1>
+
+        <div class="architecture-diagram" id="diagram">
+            <svg width="100%" height="100%" style="position: absolute; top: 0; left: 0;">
+                <defs>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                        <polygon points="0 0, 10 3.5, 0 7" fill="#667eea" />
+                    </marker>
+                </defs>
+
+                <!-- Authentication Flow -->
+                <line x1="150" y1="80" x2="250" y2="70" class="arrow-line" />
+                <rect x="180" y="45" width="90" height="20" class="flow-label-bg"></rect>
+                <text x="225" y="58" class="flow-label" text-anchor="middle">1. Redirect to Login</text>
+
+                <line x1="370" y1="70" x2="450" y2="70" class="arrow-line" />
+                <rect x="385" y="50" width="100" height="20" class="flow-label-bg" />
+                <text x="425" y="63" class="flow-label" text-anchor="middle">2. Federate Auth</text>
+
+                <line x1="310" y1="110" x2="600" y2="200" class="arrow-line" />
+                <rect x="430" y="140" width="130" height="20" class="flow-label-bg" />
+                <text x="495" y="153" class="flow-label" text-anchor="middle">3. Return JWT Token</text>
+
+                <!-- License Validation Flow -->
+                <line x1="700" y1="320" x2="850" y2="380" class="arrow-line" />
+                <rect x="700" y="340" width="140" height="20" class="flow-label-bg" />
+                <text x="770" y="353" class="flow-label" text-anchor="middle">4. Query License Status</text>
+
+                <line x1="900" y1="430" x2="770" y2="480" class="arrow-line" />
+                <rect x="810" y="450" width="120" height="20" class="flow-label-bg" />
+                <text x="865" y="463" class="flow-label" text-anchor="middle">5. Validate & Check</text>
+
+                <line x1="850" y1="410" x2="920" y2="450" class="arrow-line" />
+                <rect x="860" y="420" width="80" height="20" class="flow-label-bg" />
+                <text x="900" y="433" class="flow-label" text-anchor="middle">6. Track Usage</text>
+
+                <!-- Enhanced Access Code Flow -->
+                <line x1="600" y1="280" x2="200" y2="280" class="arrow-line" />
+                <rect x="350" y="260" width="150" height="20" class="flow-label-bg" />
+                <text x="425" y="273" class="flow-label" text-anchor="middle">7. Enhanced Access Code</text>
+
+                <!-- User/Account Creation Flow -->
+                <line x1="125" y1="300" x2="125" y2="438" class="arrow-line" />
+                <rect x="20" y="360" width="180" height="20" class="flow-label-bg"></rect>
+                <text x="110" y="375" class="flow-label" text-anchor="middle">8. Check User/Create Account</text>
+
+                <line x1="200" y1="280" x2="280" y2="380" class="arrow-line" />
+                <rect x="210" y="300" width="110" height="20" class="flow-label-bg" />
+                <text x="264" y="313" class="flow-label" text-anchor="middle">9. Feature Control</text>
+
+                <!-- Admin Functions -->
+                <line x1="710" y1="600" x2="710" y2="530" class="arrow-line" />
+                <rect x="640" y="560" width="150" height="20" class="flow-label-bg" />
+                <text x="710" y="573" class="flow-label" text-anchor="middle">10. License Management</text>
+            </svg>
+
+            <!-- Components -->
+            <div class="component user" data-tooltip="End user accessing APP-X applications">
+                <div>👤</div>
+                <div>USER</div>
+            </div>
+
+            <div class="component keycloak"
+                data-tooltip="Identity broker handling SSO and federation to Microsoft Entra ID">
+                <div>🔐</div>
+                <div>KEYCLOAK</div>
+                <div style="font-size: 10px;">Identity Broker</div>
+            </div>
+
+            <div class="component entra-id" data-tooltip="Microsoft Entra ID for enterprise authentication">
+                <div>🏢</div>
+                <div>ENTRA ID</div>
+            </div>
+
+            <div class="component app-admin"
+                data-tooltip="Central authorization service with integrated license validation">
+                <div>⚙️</div>
+                <div>APP-ADMIN</div>
+                <div style="font-size: 10px;">Authorization + License Service</div>
+            </div>
+
+            <div class="component license-manager"
+                data-tooltip="Manages license validation, feature access, and usage limits">
+                <div>📋</div>
+                <div>LICENSE</div>
+                <div>MANAGER</div>
+            </div>
+
+            <div class="component database" data-tooltip="Stores users, accounts, licenses, plans, and usage data">
+                <div>🗄️</div>
+                <div>DATABASE</div>
+            </div>
+
+            <div class="component usage-tracker" data-tooltip="Tracks feature usage and enforces limits in real-time">
+                <div>📊</div>
+                <div>USAGE</div>
+                <div>TRACKER</div>
+            </div>
+
+            <div class="component app-x" data-tooltip="Client application with license-aware middleware">
+                <div>📱</div>
+                <div>APP-X</div>
+                <div style="font-size: 10px;">Client Application</div>
+            </div>
+
+            <div class="component token-cache" data-tooltip="Local cache for access codes with license information">
+                <div>💾</div>
+                <div>TOKEN</div>
+                <div>CACHE</div>
+            </div>
+
+            <div class="component feature-gate" data-tooltip="Enforces feature access based on license tier and usage">
+                <div>🚪</div>
+                <div>FEATURE</div>
+                <div>GATE</div>
+            </div>
+
+            <div class="component admin-portal" data-tooltip="License administration and monitoring dashboard">
+                <div>👨‍💼</div>
+                <div>ADMIN</div>
+                <div>PORTAL</div>
+            </div>
+
+            <!-- Legend -->
+            <div class="legend">
+                <h4>Component Types</h4>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #ff6b6b, #ee5a52);"></div>
+                    User Interface
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #4ecdc4, #44a08d);"></div>
+                    Authentication
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #667eea, #764ba2);"></div>
+                    Authorization
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #ffa726, #ff7043);"></div>
+                    License Management
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #42a5f5, #1976d2);"></div>
+                    Client Application
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #26a69a, #00695c);"></div>
+                    Data Storage
+                </div>
+            </div>
+
+            <!-- Flow Steps -->
+            <div class="flow-steps">
+                <h4>License-Aware Auth Flow</h4>
+
+                <div class="step">
+                    <span class="step-num">1.</span><strong>User Access:</strong> User accesses APP-X, gets redirected
+                    to Keycloak for authentication
+                </div>
+
+                <div class="step">
+                    <span class="step-num">2.</span><strong>Federation:</strong> Keycloak federates authentication to
+                    Microsoft Entra ID
+                </div>
+
+                <div class="step">
+                    <span class="step-num">3.</span><strong>JWT Return:</strong> Successful authentication returns JWT
+                    token with user 'sub' (User ID) to APP-ADMIN
+                </div>
+
+                <div class="step">
+                    <span class="step-num">4.</span><strong>License Query:</strong> APP-ADMIN queries License Manager
+                    for account license status and features
+                </div>
+
+                <div class="step">
+                    <span class="step-num">5.</span><strong>Validation Checks:</strong>
+                    <ul style="margin: 5px 0; padding-left: 15px; font-size: 10px;">
+                        <li>License status (active/expired/trial)</li>
+                        <li>Plan features & usage limits</li>
+                        <li>Seat availability & allocation</li>
+                        <li>Account type (Personal/Business)</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <span class="step-num">6.</span><strong>Usage Tracking:</strong> Usage Tracker records feature
+                    access and enforces real-time limits
+                </div>
+
+                <div class="step">
+                    <span class="step-num">7.</span><strong>Enhanced Access Code:</strong> Generated with:
+                    <ul style="margin: 5px 0; padding-left: 15px; font-size: 10px;">
+                        <li>User permissions & roles</li>
+                        <li>License tier & enabled features</li>
+                        <li>Usage limits & quotas</li>
+                        <li>Account context & expiration</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <span class="step-num">8.</span><strong>User/Account Setup:</strong>
+                    <ul style="margin: 5px 0; padding-left: 15px; font-size: 10px;">
+                        <li>Search USER table by Keycloak 'sub'</li>
+                        <li>If new user: Create USER + Personal ACCOUNT</li>
+                        <li>Cache Access Code in Account table</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <span class="step-num">9.</span><strong>Feature Enforcement:</strong> Feature Gate controls access
+                    based on license-aware Access Code claims
+                </div>
+
+                <div class="step">
+                    <span class="step-num">10.</span><strong>Administration:</strong> Admin Portal enables license
+                    management, user invitations, and account administration
+                </div>
+            </div>
+
+            <!-- Tooltip -->
+            <div class="tooltip" id="tooltip"></div>
+        </div>
+
+        <div
+            style="margin-top: 30px; padding: 20px; background: #f8fafc; border-radius: 10px; border-left: 4px solid #667eea;">
+            <h3 style="margin: 0 0 15px 0; color: #2c3e50;">Key Integration Points & Account Model</h3>
+            <div
+                style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 14px; margin-bottom: 20px;">
+                <div>
+                    <strong>🔐 Authentication Layer:</strong> Keycloak + Entra ID federation provides enterprise SSO
+                    while maintaining license context through user 'sub' mapping
+                </div>
+                <div>
+                    <strong>⚡ Real-time Validation:</strong> Every token request validates current license status,
+                    feature entitlements, and usage limits
+                </div>
+                <div>
+                    <strong>📊 Usage Enforcement:</strong> API calls, feature usage, and resource consumption tracked
+                    against license limits with immediate blocking
+                </div>
+                <div>
+                    <strong>🔄 Offline Resilience:</strong> Cached Access Codes in Account table enable limited offline
+                    functionality with proper expiration handling
+                </div>
+            </div>
+
+            <div style="background: rgba(103, 126, 234, 0.1); padding: 15px; border-radius: 8px; margin-top: 15px;">
+                <h4 style="margin: 0 0 10px 0; color: #667eea;">Account Creation Logic</h4>
+                <div style="font-size: 13px;">
+                    <strong>New User Flow:</strong> Keycloak 'sub' → Search USER table → If not found: Create USER
+                    record + Personal ACCOUNT → Link to Access Code
+                    <br><br>
+                    <strong>Account Types:</strong>
+                    <ul style="margin: 8px 0; padding-left: 20px;">
+                        <li><strong>Personal:</strong> Single-user account created automatically on first login</li>
+                        <li><strong>Business:</strong> Multi-user account with invitation system and role delegation via
+                            APP-ADMIN</li>
+                    </ul>
+
+                    <strong>Token Attachment:</strong> After successful login, JWT Access Code is attached to the
+                    ACCOUNT record for both online and offline access scenarios.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add interactive tooltips
+        document.querySelectorAll('.component').forEach(component => {
+            component.addEventListener('mouseenter', (e) => {
+                const tooltip = document.getElementById('tooltip');
+                const tooltipText = e.target.getAttribute('data-tooltip');
+                if (tooltipText) {
+                    tooltip.textContent = tooltipText;
+                    tooltip.style.left = (e.pageX + 10) + 'px';
+                    tooltip.style.top = (e.pageY - 40) + 'px';
+                    tooltip.style.opacity = '1';
+                }
+            });
+
+            component.addEventListener('mouseleave', () => {
+                const tooltip = document.getElementById('tooltip');
+                tooltip.style.opacity = '0';
+            });
+
+            component.addEventListener('mousemove', (e) => {
+                const tooltip = document.getElementById('tooltip');
+                tooltip.style.left = (e.pageX + 10) + 'px';
+                tooltip.style.top = (e.pageY - 40) + 'px';
+            });
+        });
+
+        // Add click animations
+        document.querySelectorAll('.component').forEach(component => {
+            component.addEventListener('click', () => {
+                component.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    component.style.transform = 'translateY(-2px)';
+                }, 150);
+            });
+        });
+
+        // Add flowing animation to arrows with increased speed
+        const arrows = document.querySelectorAll('.arrow-line');
+        arrows.forEach((arrow, index) => {
+            arrow.style.strokeDasharray = '8,4';
+            arrow.style.strokeDashoffset = '0';
+            arrow.style.animation = `flow ${1 + index * 0.1}s linear infinite`;
+        });
+
+        // Add CSS animation for faster arrow flow
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes flow {
+                0% { stroke-dashoffset: 0; }
+                100% { stroke-dashoffset: 12; }
+            }
+            
+            .step {
+                transition: all 0.3s ease;
+            }
+            
+            .step:hover {
+                background: rgba(103, 126, 234, 0.15);
+                transform: translateX(5px);
+                border-left-color: #ff6b6b;
+            }
+            
+            .component {
+                animation: pulse 3s ease-in-out infinite alternate;
+            }
+            
+            @keyframes pulse {
+                0% { box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
+                100% { box-shadow: 0 6px 20px rgba(103, 126, 234, 0.3); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+
+</html>

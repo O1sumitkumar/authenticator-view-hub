@@ -40,3 +40,334 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Enhanced Grid Styling */
+.e-grid {
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background: hsl(var(--background));
+  font-family: inherit;
+}
+
+.e-grid .e-gridheader {
+  background: hsl(var(--muted));
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.e-grid .e-headercell {
+  background: hsl(var(--muted));
+  color: hsl(var(--foreground));
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+  border-right: 1px solid hsl(var(--border));
+  font-size: 0.875rem;
+}
+
+.e-grid .e-headercell:hover {
+  background: hsl(var(--muted) / 0.8);
+}
+
+.e-grid .e-rowcell {
+  padding: 0.75rem 1rem;
+  border-right: 1px solid hsl(var(--border));
+  border-bottom: 1px solid hsl(var(--border));
+  color: hsl(var(--foreground));
+  font-size: 0.875rem;
+  vertical-align: middle;
+}
+
+.e-grid .e-row:hover .e-rowcell {
+  background: hsl(var(--muted) / 0.3);
+}
+
+.e-grid .e-altrow .e-rowcell {
+  background: hsl(var(--muted) / 0.1);
+}
+
+.e-grid .e-gridcontent {
+  background: hsl(var(--background));
+}
+
+.e-grid .e-toolbar {
+  background: hsl(var(--muted));
+  border-bottom: 1px solid hsl(var(--border));
+  padding: 0.5rem 1rem;
+}
+
+.e-grid .e-toolbar .e-tbar-btn {
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--foreground));
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.e-grid .e-toolbar .e-tbar-btn:hover {
+  background: hsl(var(--muted));
+  border-color: hsl(var(--border));
+}
+
+.e-grid .e-toolbar .e-tbar-btn:focus {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+.e-grid .e-toolbar .e-input-group {
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.375rem;
+  padding: 0.5rem;
+}
+
+.e-grid .e-toolbar .e-input-group input {
+  background: transparent;
+  border: none;
+  color: hsl(var(--foreground));
+  font-size: 0.875rem;
+}
+
+.e-grid .e-toolbar .e-input-group input::placeholder {
+  color: hsl(var(--muted-foreground));
+}
+
+.e-grid .e-pager {
+  background: hsl(var(--muted));
+  border-top: 1px solid hsl(var(--border));
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: hsl(var(--foreground));
+}
+
+.e-grid .e-pager .e-pagercontainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.e-grid .e-pager .e-pagercontainer .e-prevpage,
+.e-grid .e-pager .e-pagercontainer .e-nextpage,
+.e-grid .e-pager .e-pagercontainer .e-prevpagedisabled,
+.e-grid .e-pager .e-pagercontainer .e-nextpagedisabled {
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--foreground));
+  border-radius: 0.375rem;
+  padding: 0.5rem;
+  min-width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.e-grid .e-pager .e-pagercontainer .e-prevpage:hover,
+.e-grid .e-pager .e-pagercontainer .e-nextpage:hover {
+  background: hsl(var(--muted));
+  border-color: hsl(var(--border));
+}
+
+.e-grid .e-pager .e-pagercontainer .e-prevpagedisabled,
+.e-grid .e-pager .e-pagercontainer .e-nextpagedisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.e-grid .e-pager .e-pagercontainer .e-numericcontainer {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.e-grid .e-pager .e-pagercontainer .e-numericcontainer .e-pagercontainer {
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--foreground));
+  border-radius: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  min-width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  font-size: 0.875rem;
+}
+
+.e-grid .e-pager .e-pagercontainer .e-numericcontainer .e-pagercontainer:hover {
+  background: hsl(var(--muted));
+  border-color: hsl(var(--border));
+}
+
+.e-grid .e-pager .e-pagercontainer .e-numericcontainer .e-currentitem {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border-color: hsl(var(--primary));
+}
+
+.e-grid .e-pager .e-pagercontainer .e-numericcontainer .e-currentitem:hover {
+  background: hsl(var(--primary) / 0.9);
+}
+
+.e-grid .e-pager .e-pagercontainer .e-pagercount {
+  color: hsl(var(--muted-foreground));
+  font-size: 0.875rem;
+}
+
+.e-grid .e-pager .e-pagercontainer .e-pagesizes {
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--foreground));
+  border-radius: 0.375rem;
+  padding: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.e-grid .e-pager .e-pagercontainer .e-pagesizes:focus {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* Dropdown styling */
+.e-grid .e-dropdownlist {
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--foreground));
+  border-radius: 0.375rem;
+  padding: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.e-grid .e-dropdownlist:focus {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* Action buttons styling */
+.e-grid .e-rowcell .e-btn {
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--foreground));
+  border-radius: 0.375rem;
+  padding: 0.5rem;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.e-grid .e-rowcell .e-btn:hover {
+  background: hsl(var(--muted));
+  border-color: hsl(var(--border));
+}
+
+/* Status badges in grid */
+.e-grid .e-rowcell .badge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+}
+
+/* Responsive grid */
+@media (max-width: 768px) {
+  .e-grid .e-headercell,
+  .e-grid .e-rowcell {
+    padding: 0.5rem;
+    font-size: 0.75rem;
+  }
+  
+  .e-grid .e-pager {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: stretch;
+  }
+  
+  .e-grid .e-pager .e-pagercontainer {
+    justify-content: center;
+  }
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .e-grid {
+    background: hsl(var(--background));
+  }
+  
+  .e-grid .e-gridheader {
+    background: hsl(var(--muted));
+  }
+  
+  .e-grid .e-headercell {
+    background: hsl(var(--muted));
+    color: hsl(var(--foreground));
+  }
+  
+  .e-grid .e-rowcell {
+    color: hsl(var(--foreground));
+  }
+}
+
+/* Additional grid improvements */
+.e-grid .e-gridcontent {
+  min-height: 400px;
+}
+
+.e-grid .e-emptyrow {
+  background: hsl(var(--background));
+  color: hsl(var(--muted-foreground));
+  font-style: italic;
+  text-align: center;
+  padding: 2rem;
+}
+
+.e-grid .e-loading {
+  background: hsl(var(--background));
+  color: hsl(var(--muted-foreground));
+}
+
+/* Better spacing for grid content */
+.e-grid .e-gridcontent .e-table {
+  border-collapse: collapse;
+}
+
+.e-grid .e-gridcontent .e-table td,
+.e-grid .e-gridcontent .e-table th {
+  border: 1px solid hsl(var(--border));
+}
+
+/* Improved toolbar styling */
+.e-grid .e-toolbar .e-tbar-btn-text {
+  font-weight: 500;
+}
+
+.e-grid .e-toolbar .e-tbar-btn-icon {
+  font-size: 1rem;
+}
+
+/* Better pagination styling */
+.e-grid .e-pager .e-pagercontainer .e-pagercount {
+  font-weight: 500;
+}
+
+.e-grid .e-pager .e-pagercontainer .e-pagesizes {
+  min-width: 80px;
+}
+
+/* Responsive improvements */
+@media (max-width: 640px) {
+  .e-grid .e-toolbar {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: stretch;
+  }
+  
+  .e-grid .e-toolbar .e-tbar-btn {
+    justify-content: center;
+  }
+}
