@@ -1,8 +1,8 @@
+@import './styles/syncfusion.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import './styles/syncfusion.css';
 
 @font-face {
   font-family: Calibri, Arial, Helvetica, sans-serif !important;
