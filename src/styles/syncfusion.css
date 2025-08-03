@@ -1,31 +1,45 @@
 /* Syncfusion theme customization for dashboard */
 @import url('https://cdn.syncfusion.com/ej2/material3.css');
 
-/* Grid customization - Dark Theme */
+/* Enhanced Grid customization - Dark Theme */
 .dark .e-grid {
-  background: transparent !important;
-  border: none !important;
+  background: hsl(var(--card)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 1px 3px 0 hsl(var(--foreground) / 0.1) !important;
 }
 
 .dark .e-grid .e-headercell {
-  background: hsl(var(--muted)) !important;
+  background: linear-gradient(135deg, hsl(var(--muted)), hsl(var(--muted) / 0.8)) !important;
   color: hsl(var(--foreground)) !important;
   border-color: hsl(var(--border)) !important;
   font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  padding: 16px 12px !important;
+  border-bottom: 2px solid hsl(var(--border)) !important;
 }
 
 .dark .e-grid .e-row {
   background: transparent !important;
   color: hsl(var(--foreground)) !important;
-  border-color: hsl(var(--border)) !important;
+  border-color: hsl(var(--border) / 0.5) !important;
+  transition: all 0.2s ease-in-out !important;
+  padding: 4px 0 !important;
 }
 
 .dark .e-grid .e-row:hover {
-  background: hsl(var(--muted) / 0.5) !important;
+  background: linear-gradient(90deg, hsl(var(--primary) / 0.1), hsl(var(--primary) / 0.05)) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 8px hsl(var(--foreground) / 0.1) !important;
 }
 
 .dark .e-grid .e-altrow {
-  background: hsl(var(--muted) / 0.2) !important;
+  background: hsl(var(--muted) / 0.1) !important;
+}
+
+.dark .e-grid .e-row .e-rowcell {
+  padding: 16px 12px !important;
+  border-right: 1px solid hsl(var(--border) / 0.3) !important;
 }
 
 .dark .e-grid .e-content {
@@ -33,9 +47,37 @@
 }
 
 .dark .e-grid .e-gridpager {
-  background: hsl(var(--card)) !important;
+  background: linear-gradient(135deg, hsl(var(--muted)), hsl(var(--muted) / 0.8)) !important;
   color: hsl(var(--foreground)) !important;
   border-color: hsl(var(--border)) !important;
+  border-top: 1px solid hsl(var(--border)) !important;
+  padding: 12px 16px !important;
+  border-radius: 0 0 8px 8px !important;
+}
+
+.dark .e-grid .e-gridpager .e-page,
+.dark .e-grid .e-gridpager .e-numericitem {
+  background: hsl(var(--background)) !important;
+  color: hsl(var(--foreground)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: 4px !important;
+  margin: 0 2px !important;
+  min-width: 32px !important;
+  height: 32px !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+.dark .e-grid .e-gridpager .e-page:hover,
+.dark .e-grid .e-gridpager .e-numericitem:hover {
+  background: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
+  transform: translateY(-1px) !important;
+}
+
+.dark .e-grid .e-gridpager .e-currentitem {
+  background: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
+  border-color: hsl(var(--primary)) !important;
 }
 
 /* Chart customization - Dark Theme */
@@ -92,31 +134,45 @@
   border-color: hsl(var(--primary)) !important;
 }
 
-/* Light theme customizations */
+/* Enhanced Light theme customizations */
 .e-grid {
-  background: transparent !important;
-  border: none !important;
+  background: hsl(var(--card)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 1px 3px 0 hsl(var(--foreground) / 0.1) !important;
 }
 
 .e-grid .e-headercell {
-  background: hsl(var(--muted)) !important;
+  background: linear-gradient(135deg, hsl(var(--muted)), hsl(var(--muted) / 0.8)) !important;
   color: hsl(var(--foreground)) !important;
   border-color: hsl(var(--border)) !important;
   font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  padding: 16px 12px !important;
+  border-bottom: 2px solid hsl(var(--border)) !important;
 }
 
 .e-grid .e-row {
   background: transparent !important;
   color: hsl(var(--foreground)) !important;
-  border-color: hsl(var(--border)) !important;
+  border-color: hsl(var(--border) / 0.5) !important;
+  transition: all 0.2s ease-in-out !important;
+  padding: 4px 0 !important;
 }
 
 .e-grid .e-row:hover {
-  background: hsl(var(--muted) / 0.5) !important;
+  background: linear-gradient(90deg, hsl(var(--primary) / 0.1), hsl(var(--primary) / 0.05)) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 8px hsl(var(--foreground) / 0.1) !important;
 }
 
 .e-grid .e-altrow {
-  background: hsl(var(--muted) / 0.2) !important;
+  background: hsl(var(--muted) / 0.1) !important;
+}
+
+.e-grid .e-row .e-rowcell {
+  padding: 16px 12px !important;
+  border-right: 1px solid hsl(var(--border) / 0.3) !important;
 }
 
 .e-grid .e-content {
@@ -124,9 +180,37 @@
 }
 
 .e-grid .e-gridpager {
-  background: hsl(var(--card)) !important;
+  background: linear-gradient(135deg, hsl(var(--muted)), hsl(var(--muted) / 0.8)) !important;
   color: hsl(var(--foreground)) !important;
   border-color: hsl(var(--border)) !important;
+  border-top: 1px solid hsl(var(--border)) !important;
+  padding: 12px 16px !important;
+  border-radius: 0 0 8px 8px !important;
+}
+
+.e-grid .e-gridpager .e-page,
+.e-grid .e-gridpager .e-numericitem {
+  background: hsl(var(--background)) !important;
+  color: hsl(var(--foreground)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: 4px !important;
+  margin: 0 2px !important;
+  min-width: 32px !important;
+  height: 32px !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+.e-grid .e-gridpager .e-page:hover,
+.e-grid .e-gridpager .e-numericitem:hover {
+  background: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
+  transform: translateY(-1px) !important;
+}
+
+.e-grid .e-gridpager .e-currentitem {
+  background: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
+  border-color: hsl(var(--primary)) !important;
 }
 
 /* Chart customization - Light Theme */

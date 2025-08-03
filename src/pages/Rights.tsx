@@ -66,10 +66,10 @@ const mockApplications: Application[] = [
 ];
 
 const mockAccounts: Account[] = [
-  { id: "1", name: "John Doe", accountId: "acc-101", accountType: "Personal", sharedAccounts: [], createdAt: new Date(), updatedAt: new Date() },
-  { id: "2", name: "Jane Smith", accountId: "acc-102", accountType: "Personal", sharedAccounts: [], createdAt: new Date(), updatedAt: new Date() },
-  { id: "3", name: "Company Corp", accountId: "acc-200", accountType: "Business", sharedAccounts: ["acc-101"], createdAt: new Date(), updatedAt: new Date() },
-  { id: "4", name: "Temporary User", accountId: "acc-301", accountType: "Temporary", sharedAccounts: [], createdAt: new Date(), updatedAt: new Date() },
+  { id: "1", name: "John Doe", accountId: "acc-101", accountType: "Personal", sharedAccounts: [], users: ["user-101"], createdAt: new Date(), updatedAt: new Date() },
+  { id: "2", name: "Jane Smith", accountId: "acc-102", accountType: "Personal", sharedAccounts: [], users: ["user-102"], createdAt: new Date(), updatedAt: new Date() },
+  { id: "3", name: "Company Corp", accountId: "acc-200", accountType: "Business", sharedAccounts: ["acc-101"], users: ["user-201", "user-202"], createdAt: new Date(), updatedAt: new Date() },
+  { id: "4", name: "Temporary User", accountId: "acc-301", accountType: "Temporary", sharedAccounts: [], users: ["user-301"], createdAt: new Date(), updatedAt: new Date() },
 ];
 
 const mockRights: Rights[] = [

@@ -287,6 +287,7 @@ export default function Accounts() {
       accountId: "",
       accountType: "Temporary",
       sharedAccounts: [],
+      users: [],
     });
     setIsAddDialogOpen(false);
   };

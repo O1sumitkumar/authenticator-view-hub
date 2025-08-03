@@ -1,4 +1,10 @@
-import { keycloak } from './keycloak';
+// Mock keycloak object for development
+const keycloak = {
+  token: null as string | null,
+  isTokenExpired: (minValidity?: number) => false,
+  updateToken: (minValidity?: number) => Promise.resolve(false),
+  login: () => console.log('Login required'),
+};
 
 /**
  * Base API URL from environment variable or default
