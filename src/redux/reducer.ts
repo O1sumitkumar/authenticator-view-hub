@@ -5,6 +5,7 @@ import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
 import storage from "redux-persist/lib/storage";
 import sessionStorage from "redux-persist/lib/storage/session";
 import authSlice from "./auth/auth.slice";
+import { adminApi } from "./api/adminApi";
 
 // Auth persist config (local storage)
 const authPersistConfig: PersistConfig<ReturnType<typeof authSlice>> = {
@@ -35,8 +36,8 @@ const persistedAuthSlice = persistReducer<ReturnType<typeof authSlice>>(
 // combine all reducers (some persisted, some not)
 const rootReducer: ReduxReducer = combineReducers({
   auth: persistedAuthSlice,
+  [adminApi.reducerPath]: adminApi.reducer,
   // filesConfig: persistedFilesConfigSlice,
-  //   [api.reducerPath]: api.reducer,
 }) as ReduxReducer;
 
 // the root reducer

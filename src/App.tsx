@@ -9,17 +9,17 @@ import { store, persistor } from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import KeycloakProvider from "./lib/auth/KeycloakProvider";
 import ProtectedRoute from "./lib/auth/ProtectedRoute";
-import DashboardLayout from "./components/DashboardLayout";
-import Dashboard from "./pages/Dashboard";
+import { AdminLayout } from "./components/AdminLayout";
+import { Dashboard } from "./pages/Dashboard";
 import Users from "./pages/Users";
 import Codes from "./pages/Codes";
 import UserDetail from "./pages/UserDetail";
 import Security from "./pages/Security";
 import Activity from "./pages/Activity";
 import Settings from "./pages/Settings";
-import Applications from "./pages/Applications";
-import Rights from "./pages/Rights";
-import Accounts from "./pages/Accounts";
+import { Applications } from "./pages/Applications";
+import { Rights } from "./pages/Rights";
+import { Accounts } from "./pages/Accounts";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Unauthorized from "./pages/Unauthorized";
@@ -94,7 +94,7 @@ const App = () => (
                     path="/"
                     element={
                       <ProtectedRoute>
-                        <DashboardLayout />
+                        <AdminLayout />
                       </ProtectedRoute>
                     }
                   >

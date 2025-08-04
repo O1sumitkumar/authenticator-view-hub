@@ -4,6 +4,7 @@ import { createLogger } from 'redux-logger';
 
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistStore } from 'redux-persist';
 import { persistedReducer } from './reducer';
+import { adminApi } from './api/adminApi';
 
 const logger = createLogger();
 const store = configureStore({
@@ -11,10 +12,12 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) => {
     const middleware = getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER, 'auth/setUserFromKeycloak'],
+        ignoredActionsPaths: ['payload'],
+        ignoredPaths: ['auth.user'],
       },
       immutableCheck: false,
-    });
+    }).concat(adminApi.middleware);
     return process.env.NODE_ENV !== 'production' ? middleware.concat(logger as any) : middleware;
   },
   devTools: true,

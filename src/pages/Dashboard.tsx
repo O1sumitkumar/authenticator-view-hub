@@ -1,327 +1,245 @@
-import { useState, useEffect } from 'react';
-import { ColumnDirective, ColumnsDirective, GridComponent } from '@syncfusion/ej2-react-grids';
-import { ChartComponent, SeriesCollectionDirective, SeriesDirective, Category, Legend, Tooltip, DataLabel, Inject } from '@syncfusion/ej2-react-charts';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Users, Shield, Activity, AlertTriangle, TrendingUp, Clock, Globe, Key, Building } from 'lucide-react';
-import type { DashboardStats, SecurityAlert, AdminDashboardStats } from '@/types/auth';
-import EnvDebug from '@/components/EnvDebug';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
+import { UserPermissionsCard } from '@/components/UserPermissionsCard';
+import { 
+  AppWindow, 
+  Shield, 
+  Users, 
+  Clock,
+  TrendingUp,
+  AlertTriangle,
+  User
+} from 'lucide-react';
+import { 
+  useGetApplicationsQuery, 
+  useGetRightsQuery, 
+  useGetAccountsQuery 
+} from '@/redux/api/adminApi';
 
-const statsData: DashboardStats = {
-  totalUsers: 1247,
-  activeUsers: 1089,
-  usersWithTwoFactor: 892,
-  suspendedUsers: 15,
-  todayLogins: 324,
-  totalLogins: 45672,
-  securityAlerts: 3
-};
+export function Dashboard() {
+  const { user } = useCurrentUser();
+  
+  // Get data from RTK Query
+  const { data: applications = [], isLoading: applicationsLoading } = useGetApplicationsQuery();
+  const { data: rights = [], isLoading: rightsLoading } = useGetRightsQuery();
+  const { data: accounts = [], isLoading: accountsLoading } = useGetAccountsQuery();
 
-const adminStatsData: AdminDashboardStats = {
-  totalUsers: 1247,
-  totalAccounts: 156,
-  totalApplications: 8,
-  totalRights: 342,
-  temporaryAccounts: 45,
-  personalAccounts: 89,
-  businessAccounts: 22,
-  activeApplications: 7,
-  pendingInvitations: 12,
-};
-
-const recentAlerts: SecurityAlert[] = [
-  {
-    id: '1',
-    type: 'failed_login',
-    message: 'Multiple failed login attempts detected',
-    user: 'john.doe@company.com',
-    timestamp: new Date('2024-01-15T10:30:00'),
-    severity: 'high',
-    resolved: false
-  },
-  {
-    id: '2',
-    type: 'new_device',
-    message: 'New device login detected',
-    user: 'jane.smith@company.com',
-    timestamp: new Date('2024-01-15T09:15:00'),
-    severity: 'medium',
-    resolved: true
-  },
-  {
-    id: '3',
-    type: 'totp_disabled',
-    message: '2FA was disabled by user',
-    user: 'mike.wilson@company.com',
-    timestamp: new Date('2024-01-15T08:45:00'),
-    severity: 'medium',
-    resolved: false
-  }
-];
-
-const chartData = [
-  { month: 'Jan', active: 980, total: 1200 },
-  { month: 'Feb', active: 1045, total: 1220 },
-  { month: 'Mar', active: 1089, total: 1247 },
-];
-
-const loginData = [
-  { time: '00:00', logins: 12 },
-  { time: '04:00', logins: 8 },
-  { time: '08:00', logins: 145 },
-  { time: '12:00', logins: 89 },
-  { time: '16:00', logins: 67 },
-  { time: '20:00', logins: 34 },
-];
-
-export default function Dashboard() {
-  const [stats, setStats] = useState<DashboardStats>(statsData);
-  const [adminStats, setAdminStats] = useState<AdminDashboardStats>(adminStatsData);
-
-  const getSeverityColor = (severity: string) => {
-    switch (severity) {
-      case 'critical': return 'bg-red-600';
-      case 'high': return 'bg-red-500';
-      case 'medium': return 'bg-yellow-500';
-      case 'low': return 'bg-blue-500';
-      default: return 'bg-gray-500';
-    }
+  // Calculate dashboard metrics
+  const dashboardMetrics = {
+    applicationStats: {
+      total: applications.length,
+      active: applications.filter(app => app.status === 'active').length,
+      inactive: applications.filter(app => app.status === 'maintenance' || app.status === 'deprecated').length,
+    },
+    rightsStats: {
+      totalActive: rights.filter(right => right.is_active && new Date(right.expires_at) > new Date()).length,
+      expiringSoon: rights.filter(right => {
+        if (!right.is_active) return false;
+        const expirationDate = new Date(right.expires_at);
+        const sevenDaysFromNow = new Date();
+        sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7);
+        return expirationDate <= sevenDaysFromNow && expirationDate > new Date();
+      }).length,
+    },
+    accountStats: {
+      personal: accounts.filter(acc => acc.account_type === 'Personal').length,
+      business: accounts.filter(acc => acc.account_type === 'Business').length,
+      temporary: accounts.filter(acc => acc.account_type === 'Temporary').length,
+    },
+    pendingInvitations: 0, // TODO: Implement when invitations are added
   };
 
-  const alertTemplate = (props: SecurityAlert) => (
-    <div className="flex items-center justify-between p-4 border border-border rounded-lg bg-card">
-      <div className="flex items-center space-x-3">
-        <div className={`w-3 h-3 rounded-full ${getSeverityColor(props.severity)}`} />
-        <div>
-          <p className="text-sm font-medium text-foreground">{props.message}</p>
-          <p className="text-xs text-muted-foreground">{props.user} • {props.timestamp.toLocaleTimeString()}</p>
-        </div>
+  // Show loading state
+  if (applicationsLoading || rightsLoading || accountsLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-lg">Loading dashboard...</div>
       </div>
-      <div className="flex items-center space-x-2">
-        {props.resolved ? (
-          <Badge variant="secondary">Resolved</Badge>
-        ) : (
-          <Badge variant="destructive">Active</Badge>
-        )}
-      </div>
-    </div>
-  );
+    );
+  }
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
-        <p className="text-muted-foreground mt-2">Monitor your authentication system and user activity</p>
+        <div className="flex items-center space-x-3">
+          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+          {user && (
+            <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+              {user.role}
+            </Badge>
+          )}
+        </div>
+        <p className="text-gray-600 mt-2">
+          {user ? `Welcome back, ${user.name.split(' ')[0]}!` : 'Overview of your centralized permission management system'}
+        </p>
+        {user?.lastLogin && (
+          <p className="text-sm text-gray-500 mt-1">
+            Last login: {user.lastLogin.toLocaleDateString()} at {user.lastLogin.toLocaleTimeString()}
+          </p>
+        )}
       </div>
 
-      {/* Stats Grid */}
+      {/* Metrics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="bg-gradient-card border-border">
+        {/* Applications Card */}
+        <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-foreground">Total Users</CardTitle>
-            <Users className="h-4 w-4 text-primary" />
+            <CardTitle className="text-sm font-medium">Applications</CardTitle>
+            <AppWindow className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-foreground">{stats.totalUsers.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">
-              <TrendingUp className="inline w-3 h-3 mr-1" />
-              +12% from last month
-            </p>
+            <div className="text-2xl font-bold">{dashboardMetrics.applicationStats.total}</div>
+            <div className="flex items-center space-x-2 text-xs text-muted-foreground mt-1">
+              <Badge variant="secondary" className="text-xs">
+                {dashboardMetrics.applicationStats.active} Active
+              </Badge>
+              <Badge variant="outline" className="text-xs">
+                {dashboardMetrics.applicationStats.inactive} Inactive
+              </Badge>
+            </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-card border-border">
+        {/* Rights Card */}
+        <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-foreground">Active Users</CardTitle>
-            <Activity className="h-4 w-4 text-accent" />
+            <CardTitle className="text-sm font-medium">Active Rights</CardTitle>
+            <Shield className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-foreground">{stats.activeUsers.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">
-              {((stats.activeUsers / stats.totalUsers) * 100).toFixed(1)}% of total users
-            </p>
+            <div className="text-2xl font-bold">{dashboardMetrics.rightsStats.totalActive}</div>
+            <div className="flex items-center space-x-1 text-xs text-muted-foreground mt-1">
+              {dashboardMetrics.rightsStats.expiringSoon > 0 && (
+                <>
+                  <AlertTriangle className="h-3 w-3 text-orange-500" />
+                  <span className="text-orange-600">
+                    {dashboardMetrics.rightsStats.expiringSoon} expiring soon
+                  </span>
+                </>
+              )}
+              {dashboardMetrics.rightsStats.expiringSoon === 0 && (
+                <span className="text-green-600">All rights current</span>
+              )}
+            </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-card border-border">
+        {/* Accounts Card */}
+        <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-foreground">2FA Enabled</CardTitle>
-            <Shield className="h-4 w-4 text-primary-glow" />
+            <CardTitle className="text-sm font-medium">Accounts</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-foreground">{stats.usersWithTwoFactor.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">
-              {((stats.usersWithTwoFactor / stats.totalUsers) * 100).toFixed(1)}% coverage
-            </p>
+            <div className="text-2xl font-bold">{accounts.length}</div>
+            <div className="flex items-center space-x-1 text-xs text-muted-foreground mt-1">
+              <div className="flex space-x-1">
+                <Badge variant="secondary" className="text-xs">
+                  {dashboardMetrics.accountStats.business} Business
+                </Badge>
+                <Badge variant="outline" className="text-xs">
+                  {dashboardMetrics.accountStats.personal} Personal
+                </Badge>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-card border-border">
+        {/* System Health Card */}
+        <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-foreground">Today's Logins</CardTitle>
-            <Clock className="h-4 w-4 text-accent" />
+            <CardTitle className="text-sm font-medium">System Health</CardTitle>
+            <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-foreground">{stats.todayLogins.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">
-              <TrendingUp className="inline w-3 h-3 mr-1" />
-              +8% from yesterday
+            <div className="text-2xl font-bold text-green-600">Healthy</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              All systems operational
             </p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Admin System Stats */}
-      <div className="space-y-4">
-        <div>
-          <h2 className="text-xl font-semibold text-foreground mb-4">Admin System Overview</h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card className="bg-gradient-card border-border">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-foreground">Total Applications</CardTitle>
-              <Globe className="h-4 w-4 text-primary" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-foreground">{adminStats.totalApplications}</div>
-              <p className="text-xs text-muted-foreground">
-                Registered APP-X applications
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gradient-card border-border">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-foreground">Total Rights</CardTitle>
-              <Key className="h-4 w-4 text-accent" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-foreground">{adminStats.totalRights}</div>
-              <p className="text-xs text-muted-foreground">
-                Active permission entries
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gradient-card border-border">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-foreground">Business Accounts</CardTitle>
-              <Building className="h-4 w-4 text-primary-glow" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-foreground">{adminStats.businessAccounts}</div>
-              <p className="text-xs text-muted-foreground">
-                Corporate accounts
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gradient-card border-border">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-foreground">Pending Invitations</CardTitle>
-              <Users className="h-4 w-4 text-accent" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-foreground">{adminStats.pendingInvitations}</div>
-              <p className="text-xs text-muted-foreground">
-                Account sharing requests
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-
-      {/* Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="bg-gradient-card border-border">
+      {/* Quick Actions */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Recent Activity */}
+        <Card>
           <CardHeader>
-            <CardTitle className="text-foreground">User Growth</CardTitle>
-            <CardDescription>Active vs Total Users Over Time</CardDescription>
+            <CardTitle>Recent Activity</CardTitle>
+            <CardDescription>
+              Latest changes in your permission system
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <ChartComponent
-              id="user-growth-chart"
-              height="300px"
-              primaryXAxis={{ valueType: 'Category' }}
-              primaryYAxis={{ title: 'Users' }}
-              tooltip={{ enable: true }}
-              background="transparent"
-            >
-              <Inject services={[Category, Legend, Tooltip, DataLabel]} />
-              <SeriesCollectionDirective>
-                <SeriesDirective
-                  dataSource={chartData}
-                  xName="month"
-                  yName="total"
-                  name="Total Users"
-                  type="Column"
-                  fill="#3B82F6"
-                />
-                <SeriesDirective
-                  dataSource={chartData}
-                  xName="month"
-                  yName="active"
-                  name="Active Users"
-                  type="Column"
-                  fill="#8B5CF6"
-                />
-              </SeriesCollectionDirective>
-            </ChartComponent>
+            <div className="space-y-4">
+              {applications.slice(0, 3).map((app) => (
+                <div key={app.application_id} className="flex items-center space-x-3">
+                  <div className="h-2 w-2 bg-blue-600 rounded-full"></div>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium">Application registered</p>
+                    <p className="text-xs text-muted-foreground">
+                      {app.application_name} ({app.application_code})
+                    </p>
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    {new Date(app.created_at).toLocaleDateString()}
+                  </div>
+                </div>
+              ))}
+              {applications.length === 0 && (
+                <p className="text-sm text-muted-foreground">
+                  No recent activity. Start by registering your first application.
+                </p>
+              )}
+            </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-card border-border">
+        {/* Quick Stats */}
+        <Card>
           <CardHeader>
-            <CardTitle className="text-foreground">Login Activity</CardTitle>
-            <CardDescription>Daily Login Pattern</CardDescription>
+            <CardTitle>System Overview</CardTitle>
+            <CardDescription>
+              Key metrics for your permission management
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <ChartComponent
-              id="login-activity-chart"
-              height="300px"
-              primaryXAxis={{ valueType: 'Category' }}
-              primaryYAxis={{ title: 'Logins' }}
-              tooltip={{ enable: true }}
-              background="transparent"
-            >
-              <Inject services={[Category, Legend, Tooltip]} />
-              <SeriesCollectionDirective>
-                <SeriesDirective
-                  dataSource={loginData}
-                  xName="time"
-                  yName="logins"
-                  name="Logins"
-                  type="Line"
-                  fill="#3B82F6"
-                  width={2}
-                />
-              </SeriesCollectionDirective>
-            </ChartComponent>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium">Total Applications</span>
+                <Badge variant="secondary">{dashboardMetrics.applicationStats.total}</Badge>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium">Active Rights</span>
+                <Badge variant="secondary">{dashboardMetrics.rightsStats.totalActive}</Badge>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium">Total Accounts</span>
+                <Badge variant="secondary">{accounts.length}</Badge>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium">Account Types</span>
+                <div className="flex space-x-1">
+                  <Badge variant="outline" className="text-xs">
+                    B: {dashboardMetrics.accountStats.business}
+                  </Badge>
+                  <Badge variant="outline" className="text-xs">
+                    P: {dashboardMetrics.accountStats.personal}
+                  </Badge>
+                  <Badge variant="outline" className="text-xs">
+                    T: {dashboardMetrics.accountStats.temporary}
+                  </Badge>
+                </div>
+              </div>
+            </div>
           </CardContent>
         </Card>
-      </div>
 
-      {/* Security Alerts */}
-      <Card className="bg-gradient-card border-border">
-        <CardHeader className="flex flex-row items-center justify-between">
-          <div>
-            <CardTitle className="flex items-center text-foreground">
-              <AlertTriangle className="w-5 h-5 mr-2 text-destructive" />
-              Security Alerts
-            </CardTitle>
-            <CardDescription>Recent security events requiring attention</CardDescription>
-          </div>
-          <Button variant="outline" size="sm">
-            View All
-          </Button>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {recentAlerts.map((alert) => alertTemplate(alert))}
-        </CardContent>
-      </Card>
-      {import.meta.env.DEV && <EnvDebug />}
+        {/* User Permissions */}
+        <UserPermissionsCard />
+      </div>
     </div>
   );
 }
